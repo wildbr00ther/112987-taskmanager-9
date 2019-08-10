@@ -420,19 +420,15 @@ const getShowMoreMarkup = function () {
 
 const renderComponent = function (containerName, markup) {
   const markupContainer = document.getElementsByClassName(containerName);
-
   markupContainer[0].innerHTML += markup;
 };
 
-renderComponent('main__control', getMenuMarkup());
-renderComponent('main__search', getSearchMarkup());
-renderComponent('main__filter', getFilterMarkup());
-renderComponent('board__filter-list', getFilterListMarkup());
-renderComponent('board__tasks', getNewTaskMarkup());
-renderComponent('board__tasks', getTaskMarkup());
-renderComponent('board__tasks', getTaskMarkup());
-renderComponent('board__tasks', getTaskMarkup());
-renderComponent('board', getShowMoreMarkup());
-
-
-
+renderComponent(`main__control`, getMenuMarkup());
+renderComponent(`main__search`, getSearchMarkup());
+renderComponent(`main__filter`, getFilterMarkup());
+renderComponent(`board__filter-list`, getFilterListMarkup());
+renderComponent(`board__tasks`, getNewTaskMarkup());
+renderComponent(`board__tasks`, getTaskMarkup());
+renderComponent(`board__tasks`, getTaskMarkup());
+renderComponent(`board__tasks`, getTaskMarkup());
+renderComponent(`board`, getShowMoreMarkup());
