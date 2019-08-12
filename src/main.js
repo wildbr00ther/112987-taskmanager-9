@@ -1,6 +1,6 @@
 'use strict';
 
-const getMenuMarkup = function () {
+const getMenuMarkup = () => {
   return `
         <section class="control__btn-wrap">
           <input
@@ -32,95 +32,104 @@ const getMenuMarkup = function () {
         </section>`;
 };
 
-const getSearchMarkup = function () {
-  return `
-        <input
-          type="text"
-          id="search__input"
-          class="search__input"
-          placeholder="START TYPING — SEARCH BY WORD, #HASHTAG OR DATE"
-        />
-        <label class="visually-hidden" for="search__input">Search</label>`;
+const getSearchMarkup = () => {
+  return `<section class="main__search search container">
+    <input
+      type="text"
+      id="search__input"
+      class="search__input"
+      placeholder="START TYPING — SEARCH BY WORD, #HASHTAG OR DATE"
+    />
+    <label class="visually-hidden" for="search__input">Search</label>
+  </section>`;
 };
 
-const getFilterMarkup = function () {
-  return `
-        <input
-          type="radio"
-          id="filter__all"
-          class="filter__input visually-hidden"
-          name="filter"
-          checked
-        />
-        <label for="filter__all" class="filter__label">
-          All <span class="filter__all-count">13</span></label
-        >
-        <input
-          type="radio"
-          id="filter__overdue"
-          class="filter__input visually-hidden"
-          name="filter"
-          disabled
-        />
-        <label for="filter__overdue" class="filter__label"
-          >Overdue <span class="filter__overdue-count">0</span></label
-        >
-        <input
-          type="radio"
-          id="filter__today"
-          class="filter__input visually-hidden"
-          name="filter"
-          disabled
-        />
-        <label for="filter__today" class="filter__label"
-          >Today <span class="filter__today-count">0</span></label
-        >
-        <input
-          type="radio"
-          id="filter__favorites"
-          class="filter__input visually-hidden"
-          name="filter"
-        />
-        <label for="filter__favorites" class="filter__label"
-          >Favorites <span class="filter__favorites-count">1</span></label
-        >
-        <input
-          type="radio"
-          id="filter__repeating"
-          class="filter__input visually-hidden"
-          name="filter"
-        />
-        <label for="filter__repeating" class="filter__label"
-          >Repeating <span class="filter__repeating-count">1</span></label
-        >
-        <input
-          type="radio"
-          id="filter__tags"
-          class="filter__input visually-hidden"
-          name="filter"
-        />
-        <label for="filter__tags" class="filter__label"
-          >Tags <span class="filter__tags-count">1</span></label
-        >
-        <input
-          type="radio"
-          id="filter__archive"
-          class="filter__input visually-hidden"
-          name="filter"
-        />
-        <label for="filter__archive" class="filter__label"
-          >Archive <span class="filter__archive-count">115</span></label
-        >`;
+const getFilterMarkup = () => {
+  return `<section class="main__filter filter container">
+    <input
+      type="radio"
+      id="filter__all"
+      class="filter__input visually-hidden"
+      name="filter"
+      checked
+    />
+    <label for="filter__all" class="filter__label">
+      All <span class="filter__all-count">13</span></label
+    >
+    <input
+      type="radio"
+      id="filter__overdue"
+      class="filter__input visually-hidden"
+      name="filter"
+      disabled
+    />
+    <label for="filter__overdue" class="filter__label"
+      >Overdue <span class="filter__overdue-count">0</span></label
+    >
+    <input
+      type="radio"
+      id="filter__today"
+      class="filter__input visually-hidden"
+      name="filter"
+      disabled
+    />
+    <label for="filter__today" class="filter__label"
+      >Today <span class="filter__today-count">0</span></label
+    >
+    <input
+      type="radio"
+      id="filter__favorites"
+      class="filter__input visually-hidden"
+      name="filter"
+    />
+    <label for="filter__favorites" class="filter__label"
+      >Favorites <span class="filter__favorites-count">1</span></label
+    >
+    <input
+      type="radio"
+      id="filter__repeating"
+      class="filter__input visually-hidden"
+      name="filter"
+    />
+    <label for="filter__repeating" class="filter__label"
+      >Repeating <span class="filter__repeating-count">1</span></label
+    >
+    <input
+      type="radio"
+      id="filter__tags"
+      class="filter__input visually-hidden"
+      name="filter"
+    />
+    <label for="filter__tags" class="filter__label"
+      >Tags <span class="filter__tags-count">1</span></label
+    >
+    <input
+      type="radio"
+      id="filter__archive"
+      class="filter__input visually-hidden"
+      name="filter"
+    />
+    <label for="filter__archive" class="filter__label"
+      >Archive <span class="filter__archive-count">115</span></label
+    >
+  </section>`;
 };
 
-const getFilterListMarkup = function () {
-  return `
-         <a href="#" class="board__filter">SORT BY DEFAULT</a>
-          <a href="#" class="board__filter">SORT BY DATE up</a>
-          <a href="#" class="board__filter">SORT BY DATE down</a>`;
+const getBoardMarkup = () => {
+  return `<section class="board container">
+    <div class="board__tasks"></div>
+  </section>`;
 };
 
-const getNewTaskMarkup = function () {
+const getFilterListMarkup = () => {
+  return `<div class="board__filter-list">
+    <a href="#" class="board__filter">SORT BY DEFAULT</a>
+    <a href="#" class="board__filter">SORT BY DATE up</a>
+    <a href="#" class="board__filter">SORT BY DATE down</a>
+  </div>`;
+};
+
+const getNewTaskMarkup = () => {
   return `
         <article class="card card--edit card--black">
             <form class="card__form" method="get">
@@ -345,7 +354,7 @@ const getNewTaskMarkup = function () {
           </article>`;
 };
 
-const getTaskMarkup = function () {
+const getTaskMarkup = () => {
   return `
         <article class="card card--black">
             <div class="card__form">
@@ -414,21 +423,30 @@ const getTaskMarkup = function () {
           </article>`;
 };
 
-const getShowMoreMarkup = function () {
+const getShowMoreMarkup = () => {
   return `<button class="load-more" type="button">load more</button>`;
 };
 
-const renderComponent = function (containerName, markup) {
-  const markupContainer = document.getElementsByClassName(containerName);
-  markupContainer[0].innerHTML += markup;
+const renderComponent = (containerName, position, template) => {
+  containerName.insertAdjacentHTML(template, position);
 };
 
-renderComponent(`main__control`, getMenuMarkup());
-renderComponent(`main__search`, getSearchMarkup());
-renderComponent(`main__filter`, getFilterMarkup());
-renderComponent(`board__filter-list`, getFilterListMarkup());
-renderComponent(`board__tasks`, getNewTaskMarkup());
-renderComponent(`board__tasks`, getTaskMarkup());
-renderComponent(`board__tasks`, getTaskMarkup());
-renderComponent(`board__tasks`, getTaskMarkup());
-renderComponent(`board`, getShowMoreMarkup());
+const siteMainContainer = document.querySelector(`.main`);
+const siteHeaderContainer = siteMainContainer.querySelector(`.main__control`);
+
+renderComponent(siteHeaderContainer, getMenuMarkup(), `beforeend`);
+renderComponent(siteMainContainer, getSearchMarkup(), `beforeend`);
+renderComponent(siteMainContainer, getFilterMarkup(), `beforeend`);
+renderComponent(siteMainContainer, getBoardMarkup(), `beforeend`);
+
+const boardContainer = siteMainContainer.querySelector(`.board`);
+const tasksContainer = siteMainContainer.querySelector(`.board__tasks`);
+
+renderComponent(boardContainer, getFilterListMarkup(), `afterbegin`);
+
+renderComponent(tasksContainer, getNewTaskMarkup(), `beforeend`);
+renderComponent(tasksContainer, getTaskMarkup(), `beforeend`);
+renderComponent(tasksContainer, getTaskMarkup(), `beforeend`);
+renderComponent(tasksContainer, getTaskMarkup(), `beforeend`);
+
+renderComponent(boardContainer, getShowMoreMarkup(), `beforeend`);
