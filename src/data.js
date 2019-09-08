@@ -31,13 +31,12 @@ export const getTask = () => ({
   isFavorite: Boolean(Math.round(Math.random())),
   isArchive: Boolean(Math.round(Math.random())),
 });
-const resultArray = [];
+export const mockArray = [];
+const TASK_COUNT = 22;
 const addObjToArray = () => {
-  for (let i = 0; i < 22; i++) {
-    resultArray.push(getTask());
+  for (let i = 0; i < TASK_COUNT; i++) {
+    mockArray.push(getTask());
   }
 };
 
 addObjToArray();
-
-export default resultArray;

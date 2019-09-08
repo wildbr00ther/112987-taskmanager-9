@@ -1,6 +1,6 @@
 import {createElement} from './utils';
 
-export class Board {
+export class Sort {
   constructor() {
     this._element = null;
   }
@@ -14,8 +14,10 @@ export class Board {
 
   getTemplate() {
     return `
-    <section class="board container">
-        <div class="board__tasks"></div>
-    </section>`;
+    <div class="board__filter-list">
+      <a href="#" class="board__filter">SORT BY DEFAULT</a>
+      <a href="#" class="board__filter">SORT BY DATE up</a>
+      <a href="#" class="board__filter">SORT BY DATE down</a>
+    </div>`;
   }
 }
