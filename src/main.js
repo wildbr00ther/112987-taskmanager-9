@@ -1,68 +1,101 @@
-import {getMenuMarkup} from './components/menu.js';
-import {getSearchMarkup} from './components/search.js';
-import {getFiltersMarkup, getFilter} from './components/filter.js';
-import {getBoardMarkup} from './components/board.js';
-import {getTaskMarkup} from './components/task.js';
-import {getTaskEditMarkup} from './components/edit-task.js';
-import {getLoadButtonMarkup} from './components/show-more-btn.js';
-import mockArray from './data.js';
+import {Menu} from './components/menu.js';
+import {Search} from './components/search.js';
+import {Sort} from './components/sort';
+import {Filters} from './components/filter.js';
+import {Board} from './components/board.js';
+import {Task} from './components/task.js';
+import {TaskEdit} from './components/edit-task.js';
+import {ButtonLoad} from './components/show-more-btn.js';
+import {getTask, mockArray} from './data.js';
+import {Position, render, unrender} from './components/utils.js';
 
 const mainContainer = document.querySelector(`.main`);
 const menuContainer = document.querySelector(`.main__control`);
-export const TASK_COUNT = 9;
-export const tasks = mockArray;
+export const CARD_COUNT = 9;
 let tasksForLoad = mockArray;
 
-const renderComponent = (markup, container, repeat = 1, callback = () => null) => {
-  for (let i = 0; i < repeat; i++) {
-    container.insertAdjacentHTML(`beforeend`, markup);
+const taskMocks = new Array(CARD_COUNT)
+  .fill(``)
+  .map(getTask);
+
+// Меню
+const menu = new Menu();
+render(menuContainer, menu.getElement(), Position.BEFOREEND);
+
+// Поиск
+const search = new Search();
+render(mainContainer, search.getElement(), Position.BEFOREEND);
+
+// Фильтры
+const filters = new Filters();
+render(mainContainer, filters.getElement(), Position.BEFOREEND);
+
+// Доска
+const boardContainer = new Board();
+render(mainContainer, boardContainer.getElement(), Position.BEFOREEND);
+
+const boardList = document.querySelector(`.board`);
+
+// Сортировка
+const sort = new Sort();
+render(boardList, sort.getElement(), Position.AFTERBEGIN);
+
+// Показать еще
+const buttonLoad = new ButtonLoad();
+const buttonLoadHandler = () => {
+  renderTasks(tasksForLoad, CARD_COUNT);
+
+  if (tasksForLoad.length === 0) {
+    unrender(buttonLoad.getElement());
+    buttonLoad.set();
   }
-  callback();
 };
+render(boardList, buttonLoad.getElement(), Position.BEFOREEND);
+buttonLoad.getElement().addEventListener(`click`, buttonLoadHandler);
 
-const renderTaskEdit = (container) => {
-  let {description, dueDate, repeatingDays, tags, color} = tasksForLoad[0];
-  container.insertAdjacentHTML(`beforeend`, getTaskEditMarkup({description, dueDate, repeatingDays, tags, color}));
-  tasksForLoad = tasksForLoad.slice(1);
+const renderTask = (taskMock) => {
+  const task = new Task(taskMock);
+  const taskEdit = new TaskEdit(taskMock);
+  const tasksContainer = document.querySelector(`.board__tasks`);
+  const onEscKeyDown = (evt) => {
+    if (evt.key === `Escape` || evt.key === `Esc`) {
+      tasksContainer.replaceChild(task.getElement(), taskEdit.getElement());
+      document.removeEventListener(`keydown`, onEscKeyDown);
+    }
+  };
+
+  task.getElement()
+    .querySelector(`.card__btn--edit`)
+    .addEventListener(`click`, () => {
+      tasksContainer.replaceChild(taskEdit.getElement(), task.getElement());
+      document.addEventListener(`keydown`, onEscKeyDown);
+    });
+
+  taskEdit.getElement().querySelector(`textarea`)
+    .addEventListener(`focus`, () => {
+      document.removeEventListener(`keydown`, onEscKeyDown);
+    });
+
+  taskEdit.getElement().querySelector(`textarea`)
+    .addEventListener(`blur`, () => {
+      document.addEventListener(`keydown`, onEscKeyDown);
+    });
+
+  taskEdit.getElement()
+    .querySelector(`.card__save`)
+    .addEventListener(`click`, () => {
+      tasksContainer.replaceChild(task.getElement(), taskEdit.getElement());
+      document.removeEventListener(`keydown`, onEscKeyDown);
+    });
+
+  render(tasksContainer, task.getElement(), Position.BEFOREEND);
 };
-
-const renderTasks = (container, count) => {
+const renderTasks = (tasks, count) => {
   count = count <= tasksForLoad.length ? count : tasksForLoad.length;
   for (let i = 0; i < count; i++) {
-    let {description, dueDate, repeatingDays, tags, color} = tasksForLoad[i];
-    container.insertAdjacentHTML(`beforeend`, getTaskMarkup({description, dueDate, repeatingDays, tags, color}));
+    renderTask(tasks[i]);
   }
   tasksForLoad = tasksForLoad.slice(count);
 };
 
-const renderFilters = (container) => {
-  container.insertAdjacentHTML(`beforeend`, new Array(1)
-    .fill(``)
-    .map(getFilter)
-    .map(getFiltersMarkup)
-    .join(``));
-};
-
-
-renderComponent(getMenuMarkup(), menuContainer);
-renderComponent(getSearchMarkup(), mainContainer);
-renderFilters(mainContainer);
-renderComponent(getBoardMarkup(), mainContainer, 1, () => {
-  const boardContainer = document.querySelector(`.board`);
-  const taskListContainer = document.querySelector(`.board__tasks`);
-
-  renderTaskEdit(taskListContainer);
-  renderTasks(taskListContainer, TASK_COUNT);
-
-  renderComponent(getLoadButtonMarkup(), boardContainer);
-  const loadMoreButton = document.querySelector(`.load-more`);
-
-  const loadMoreButtonHandler = () => {
-    renderTasks(taskListContainer, TASK_COUNT);
-    if (tasksForLoad.length === 0) {
-      loadMoreButton.removeEventListener(`click`, loadMoreButtonHandler);
-      loadMoreButton.remove();
-    }
-  };
-  loadMoreButton.addEventListener(`click`, loadMoreButtonHandler);
-});
+renderTasks(taskMocks, CARD_COUNT);

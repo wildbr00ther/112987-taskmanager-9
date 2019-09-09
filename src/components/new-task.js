@@ -1,6 +1,20 @@
-export const getNewTaskMarkup = () => {
-  return `
-        <article class="card card--edit card--black">
+import {createElement} from './utils';
+
+export class NewTask {
+  constructor() {
+    this._element = null;
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate().trim());
+    }
+    return this._element;
+  }
+
+  getTemplate() {
+    return `
+    <article class="card card--edit card--black">
             <form class="card__form" method="get">
               <div class="card__inner">
                 <div class="card__control">
@@ -221,4 +235,5 @@ export const getNewTaskMarkup = () => {
               </div>
             </form>
           </article>`;
-};
+  }
+}

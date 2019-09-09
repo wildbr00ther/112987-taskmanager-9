@@ -1,5 +1,25 @@
-export const getTaskEditMarkup = ({description, dueDate, repeatingDays, tags, color}) => `
-  <article class="card card--edit card--${color} ${Object.keys(repeatingDays).some((day) => repeatingDays[day]) ? `card--repeat` : ``}">
+import {createElement} from './utils';
+
+export class TaskEdit {
+  constructor({description, dueDate, tags, color, repeatingDays}) {
+    this._description = description;
+    this._dueDate = new Date(dueDate);
+    this._tags = tags;
+    this._color = color;
+    this._element = null;
+    this._repeatingDays = repeatingDays;
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate().trim());
+    }
+
+    return this._element;
+  }
+
+  getTemplate() {
+    return `<article class="card card--edit card--${ this._color} ${Object.keys(this._repeatingDays).some((day) => this._repeatingDays[day]) ? `card--repeat` : ``}">
     <form class="card__form" method="get">
       <div class="card__inner">
         <div class="card__control">
@@ -24,7 +44,7 @@ export const getTaskEditMarkup = ({description, dueDate, repeatingDays, tags, co
               class="card__text"
               placeholder="Start typing your text here..."
               name="text"
-            >${description}</textarea>
+            >${this._description}</textarea>
           </label>
         </div>
         <div class="card__settings">
@@ -40,7 +60,7 @@ export const getTaskEditMarkup = ({description, dueDate, repeatingDays, tags, co
                     type="text"
                     placeholder=""
                     name="date"
-                    value="${new Date(dueDate).toDateString()}"
+                    value="${this._dueDate.toDateString()}"
                   />
                 </label>
               </fieldset>
@@ -55,7 +75,7 @@ export const getTaskEditMarkup = ({description, dueDate, repeatingDays, tags, co
                     id="repeat-mo-4"
                     name="repeat"
                     value="mo"
-                    ${repeatingDays.mo ? `checked` : ``}
+                    ${this._repeatingDays.mo ? `checked` : ``}
                   />
                   <label class="card__repeat-day" for="repeat-mo-4"
                     >mo</label
@@ -66,7 +86,7 @@ export const getTaskEditMarkup = ({description, dueDate, repeatingDays, tags, co
                     id="repeat-tu-4"
                     name="repeat"
                     value="tu"
-                    ${repeatingDays.tu ? `checked` : ``}
+                    ${this._repeatingDays.tu ? `checked` : ``}
                   />
                   <label class="card__repeat-day" for="repeat-tu-4"
                     >tu</label
@@ -77,7 +97,7 @@ export const getTaskEditMarkup = ({description, dueDate, repeatingDays, tags, co
                     id="repeat-we-4"
                     name="repeat"
                     value="we"
-                    ${repeatingDays.we ? `checked` : ``}
+                    ${this._repeatingDays.we ? `checked` : ``}
                   />
                   <label class="card__repeat-day" for="repeat-we-4"
                     >we</label
@@ -88,7 +108,7 @@ export const getTaskEditMarkup = ({description, dueDate, repeatingDays, tags, co
                     id="repeat-th-4"
                     name="repeat"
                     value="th"
-                    ${repeatingDays.th ? `checked` : ``}
+                    ${this._repeatingDays.th ? `checked` : ``}
                   />
                   <label class="card__repeat-day" for="repeat-th-4"
                     >th</label
@@ -99,7 +119,7 @@ export const getTaskEditMarkup = ({description, dueDate, repeatingDays, tags, co
                     id="repeat-fr-4"
                     name="repeat"
                     value="fr"
-                    ${repeatingDays.fr ? `checked` : ``}
+                    ${this._repeatingDays.fr ? `checked` : ``}
                   />
                   <label class="card__repeat-day" for="repeat-fr-4"
                     >fr</label
@@ -110,7 +130,7 @@ export const getTaskEditMarkup = ({description, dueDate, repeatingDays, tags, co
                     name="repeat"
                     value="sa"
                     id="repeat-sa-4"
-                    ${repeatingDays.sa ? `checked` : ``}
+                    ${this._repeatingDays.sa ? `checked` : ``}
                   />
                   <label class="card__repeat-day" for="repeat-sa-4"
                     >sa</label
@@ -121,7 +141,7 @@ export const getTaskEditMarkup = ({description, dueDate, repeatingDays, tags, co
                     id="repeat-su-4"
                     name="repeat"
                     value="su"
-                    ${repeatingDays.su ? `checked` : ``}
+                    ${this._repeatingDays.su ? `checked` : ``}
                   />
                   <label class="card__repeat-day" for="repeat-su-4"
                     >su</label
@@ -139,7 +159,7 @@ export const getTaskEditMarkup = ({description, dueDate, repeatingDays, tags, co
                     class="card__hashtag-hidden-input"
                   />
                   <p class="card__hashtag-name">
-                  #${Array.from(tags)[0]}
+                  #${Array.from(this._tags)[0]}
                   </p>
                   <button type="button" class="card__hashtag-delete">
                     delete
@@ -153,7 +173,7 @@ export const getTaskEditMarkup = ({description, dueDate, repeatingDays, tags, co
                     class="card__hashtag-hidden-input"
                   />
                   <p class="card__hashtag-name">
-                    #${Array.from(tags)[1]}
+                    #${Array.from(this._tags)[1]}
                   </p>
                   <button type="button" class="card__hashtag-delete">
                     delete
@@ -167,7 +187,7 @@ export const getTaskEditMarkup = ({description, dueDate, repeatingDays, tags, co
                     class="card__hashtag-hidden-input"
                   />
                   <p class="card__hashtag-name">
-                    #${Array.from(tags)[2]}
+                    #${Array.from(this._tags)[2]}
                   </p>
                   <button type="button" class="card__hashtag-delete">
                     delete
@@ -193,7 +213,7 @@ export const getTaskEditMarkup = ({description, dueDate, repeatingDays, tags, co
                 class="card__color-input card__color-input--black visually-hidden"
                 name="color"
                 value="black"
-                ${color === `black` ? `checked` : ``}
+                ${this._color === `black` ? `checked` : ``}
               />
               <label
                 for="color-black-4"
@@ -206,7 +226,7 @@ export const getTaskEditMarkup = ({description, dueDate, repeatingDays, tags, co
                 class="card__color-input card__color-input--yellow visually-hidden"
                 name="color"
                 value="yellow"
-                ${color === `yellow` ? `checked` : ``}
+                ${this._color === `yellow` ? `checked` : ``}
               />
               <label
                 for="color-yellow-4"
@@ -219,7 +239,7 @@ export const getTaskEditMarkup = ({description, dueDate, repeatingDays, tags, co
                 class="card__color-input card__color-input--blue visually-hidden"
                 name="color"
                 value="blue"
-                ${color === `blue` ? `checked` : ``}
+                ${this._color === `blue` ? `checked` : ``}
               />
               <label
                 for="color-blue-4"
@@ -232,7 +252,7 @@ export const getTaskEditMarkup = ({description, dueDate, repeatingDays, tags, co
                 class="card__color-input card__color-input--green visually-hidden"
                 name="color"
                 value="green"
-                ${color === `green` ? `checked` : ``}
+                ${this._color === `green` ? `checked` : ``}
               />
               <label
                 for="color-green-4"
@@ -245,7 +265,7 @@ export const getTaskEditMarkup = ({description, dueDate, repeatingDays, tags, co
                 class="card__color-input card__color-input--pink visually-hidden"
                 name="color"
                 value="pink"
-                ${color === `pink` ? `checked` : ``}
+                ${this._color === `pink` ? `checked` : ``}
               />
               <label
                 for="color-pink-4"
@@ -261,5 +281,6 @@ export const getTaskEditMarkup = ({description, dueDate, repeatingDays, tags, co
         </div>
       </div>
     </form>
-  </article>
-`;
+  </article>`;
+  }
+}
