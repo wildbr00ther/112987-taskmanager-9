@@ -6,6 +6,7 @@ import {Board} from './components/board.js';
 import {Task} from './components/task.js';
 import {TaskEdit} from './components/edit-task.js';
 import {ButtonLoad} from './components/show-more-btn.js';
+import {NoTask} from './components/no-task';
 import {getTask, mockArray} from './data.js';
 import {Position, render, unrender} from './components/utils.js';
 
@@ -18,45 +19,9 @@ const taskMocks = new Array(CARD_COUNT)
   .fill(``)
   .map(getTask);
 
-// Меню
-const menu = new Menu();
-render(menuContainer, menu.getElement(), Position.BEFOREEND);
-
-// Поиск
-const search = new Search();
-render(mainContainer, search.getElement(), Position.BEFOREEND);
-
-// Фильтры
-const filters = new Filters();
-render(mainContainer, filters.getElement(), Position.BEFOREEND);
-
-// Доска
-const boardContainer = new Board();
-render(mainContainer, boardContainer.getElement(), Position.BEFOREEND);
-
-const boardList = document.querySelector(`.board`);
-
-// Сортировка
-const sort = new Sort();
-render(boardList, sort.getElement(), Position.AFTERBEGIN);
-
-// Показать еще
-const buttonLoad = new ButtonLoad();
-const buttonLoadHandler = () => {
-  renderTasks(tasksForLoad, CARD_COUNT);
-
-  if (tasksForLoad.length === 0) {
-    unrender(buttonLoad.getElement());
-    buttonLoad.set();
-  }
-};
-render(boardList, buttonLoad.getElement(), Position.BEFOREEND);
-buttonLoad.getElement().addEventListener(`click`, buttonLoadHandler);
-
 const renderTask = (taskMock) => {
   const task = new Task(taskMock);
   const taskEdit = new TaskEdit(taskMock);
-  const tasksContainer = document.querySelector(`.board__tasks`);
   const onEscKeyDown = (evt) => {
     if (evt.key === `Escape` || evt.key === `Esc`) {
       tasksContainer.replaceChild(task.getElement(), taskEdit.getElement());
@@ -97,5 +62,45 @@ const renderTasks = (tasks, count) => {
   }
   tasksForLoad = tasksForLoad.slice(count);
 };
+
+// Меню
+const menu = new Menu();
+render(menuContainer, menu.getElement(), Position.BEFOREEND);
+
+// Поиск
+const search = new Search();
+render(mainContainer, search.getElement(), Position.BEFOREEND);
+
+// Фильтры
+const filters = new Filters();
+render(mainContainer, filters.getElement(), Position.BEFOREEND);
+// Доска
+const boardContainer = new Board();
+render(mainContainer, boardContainer.getElement(), Position.BEFOREEND);
+
+const boardList = document.querySelector(`.board`);
+const tasksContainer = document.querySelector(`.board__tasks`);
+
+if (mockArray.length === 0 || mockArray.length === filters._count) {
+  const noTask = new NoTask();
+  boardList.replaceChild(noTask.getElement(), tasksContainer);
+} else {
+  // Сортировка
+  const sort = new Sort();
+  render(boardList, sort.getElement(), Position.AFTERBEGIN);
+
+  // Показать еще
+  const buttonLoad = new ButtonLoad();
+  const buttonLoadHandler = () => {
+    renderTasks(tasksForLoad, CARD_COUNT);
+
+    if (tasksForLoad.length === 0) {
+      unrender(buttonLoad.getElement());
+      buttonLoad.set();
+    }
+  };
+  render(boardList, buttonLoad.getElement(), Position.BEFOREEND);
+  buttonLoad.getElement().addEventListener(`click`, buttonLoadHandler);
+}
 
 renderTasks(taskMocks, CARD_COUNT);
