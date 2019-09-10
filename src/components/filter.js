@@ -1,38 +1,30 @@
-import {mockArray} from './../data.js';
-import {createElement} from './utils';
+import {AbstractComponent} from './absctract-component';
 
-// const titleFilter = [`all`, `overdue`, `today`, `favotites`, `repeating`, `tags`, `archive`];
-const tasks = mockArray;
+// const tasks = mockArray;
 
-export class Filters {
-  constructor() {
-    this._element = null;
+export class Filters extends AbstractComponent {
+  constructor(tasks) {
+    super();
+    this._tasks = tasks;
     this._title = [`all`, `overdue`, `today`, `favotites`, `repeating`, `tags`, `archive`];
     this._count = null;
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate().trim());
-    }
-    return this._element;
   }
 
   setCount(value) {
     let count = 0;
     switch (value) {
       case `isFavorite`:
-        tasks.forEach((task) => task[value] ? count++ : null);
+        this._tasks.forEach((task) => task[value] ? count++ : null);
         this._count = count;
         return count;
 
       case `dueDate`:
-        tasks.forEach((task) => task[value] < Date.now() ? count++ : null);
+        this._tasks.forEach((task) => task[value] < Date.now() ? count++ : null);
         this._count = count;
         return count;
 
       case `repeatingDays`:
-        tasks.forEach(function (task) {
+        this._tasks.forEach(function (task) {
           let taskArray = Object.keys(task.repeatingDays).map((i) => task.repeatingDays[i]);
           taskArray = Object.keys(taskArray).some((day) => taskArray[day]) ? count++ : null;
         });
@@ -41,7 +33,7 @@ export class Filters {
 
       case `tags`:
         let tagsSet = new Set();
-        tasks.forEach(function (task) {
+        this._tasks.forEach(function (task) {
           for (let elem of task.tags) {
             tagsSet.add(elem);
           }
@@ -51,7 +43,7 @@ export class Filters {
         return count;
 
       case `today`:
-        tasks.forEach(function (task) {
+        this._tasks.forEach(function (task) {
           let time = new Date(task.dueDate).toDateString();
           let today = new Date().toDateString();
           if (time === today) {
@@ -62,12 +54,12 @@ export class Filters {
         return count;
 
       case `all`:
-        tasks.forEach((task) => task ? count++ : null);
+        this._tasks.forEach((task) => task ? count++ : null);
         this._count = count;
         return count;
 
       case `isArchive`:
-        tasks.forEach((task) => task.isArchive ? count++ : null);
+        this._tasks.forEach((task) => task.isArchive ? count++ : null);
         this._count = count;
 
         return count;
@@ -76,8 +68,7 @@ export class Filters {
   }
 
   getTemplate() {
-    return `
-    <section class="main__filter filter container">
+    return `<section class="main__filter filter container">
     <input
       type="radio"
       id="filter__all"

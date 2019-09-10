@@ -1,20 +1,8 @@
-import {createElement} from './utils';
+import {AbstractComponent} from './absctract-component';
 
-export class NewTask {
-  constructor() {
-    this._element = null;
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate().trim());
-    }
-    return this._element;
-  }
-
+export class NewTask extends AbstractComponent {
   getTemplate() {
-    return `
-    <article class="card card--edit card--black">
+    return `<article class="card card--edit card--black">
             <form class="card__form" method="get">
               <div class="card__inner">
                 <div class="card__control">
