@@ -1,23 +1,11 @@
-import {createElement} from './utils';
+import {AbstractComponent} from './absctract-component';
 
-export class Sort {
-  constructor() {
-    this._element = null;
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate().trim());
-    }
-    return this._element;
-  }
-
+export class Sort extends AbstractComponent {
   getTemplate() {
-    return `
-    <div class="board__filter-list">
-      <a href="#" class="board__filter">SORT BY DEFAULT</a>
-      <a href="#" class="board__filter">SORT BY DATE up</a>
-      <a href="#" class="board__filter">SORT BY DATE down</a>
+    return `<div class="board__filter-list">
+        <a href="#" data-sort-type="default" class="board__filter">SORT BY DEFAULT</a>
+        <a href="#" data-sort-type="date-up" class="board__filter">SORT BY DATE up</a>
+        <a href="#" data-sort-type="date-down" class="board__filter">SORT BY DATE down</a>
     </div>`;
   }
 }
