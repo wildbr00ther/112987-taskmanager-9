@@ -56,8 +56,8 @@ export class BoardController {
       this._buttonLoad.getElement().addEventListener(`click`, buttonLoadHandler);
     }
 
-    // this._sort.getElement()
-    //   .addEventListener(`click`, (evt) => this._onSortLinkClick(evt));
+    this._sort.getElement()
+      .addEventListener(`click`, (evt) => this._onSortLinkClick(evt));
   }
 
   _renderTask(taskMock) {
@@ -97,28 +97,28 @@ export class BoardController {
     render(this._taskList.getElement(), task.getElement(), Position.BEFOREEND);
   }
 
-  // _onSortLinkClick(evt) {
-  //   evt.preventDefault();
-  //
-  //   if (evt.target.tagName !== `A`) {
-  //     return;
-  //   }
-  //
-  //   this._taskList.getElement().innerHTML = ``;
-  //   switch (evt.target.dataset.sortType) {
-  //     case `date-up`:
-  //       const sortedByDateUpTasks = this._tasks.slice().sort((a, b) => a.dueDate - b.dueDate);
-  //       sortedByDateUpTasks.forEach((taskMock) => this._renderTask(taskMock));
-  //       break;
-  //     case `date-down`:
-  //       const sortedByDateDownTasks = this._tasks.slice().sort((a, b) => b.dueDate - a.dueDate);
-  //       sortedByDateDownTasks.forEach((taskMock) => this._renderTask(taskMock));
-  //       break;
-  //     case `default`:
-  //       this._tasks.forEach((taskMock) => this._renderTask(taskMock));
-  //       break;
-  //   }
-  // }
+  _onSortLinkClick(evt) {
+    evt.preventDefault();
+
+    if (evt.target.tagName !== `A`) {
+      return;
+    }
+
+    this._taskList.getElement().innerHTML = ``;
+    switch (evt.target.dataset.sortType) {
+      case `date-up`:
+        const sortedByDateUpTasks = this._tasks.slice().sort((a, b) => a.dueDate - b.dueDate);
+        sortedByDateUpTasks.forEach((taskMock) => this._renderTask(taskMock));
+        break;
+      case `date-down`:
+        const sortedByDateDownTasks = this._tasks.slice().sort((a, b) => b.dueDate - a.dueDate);
+        sortedByDateDownTasks.forEach((taskMock) => this._renderTask(taskMock));
+        break;
+      case `default`:
+        this._tasks.forEach((taskMock) => this._renderTask(taskMock));
+        break;
+    }
+  }
 
   _renderTasks(tasks, count) {
     count = count <= this._tasksForLoad.length ? count : this._tasksForLoad.length;
